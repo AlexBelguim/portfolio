@@ -1,0 +1,154 @@
+
+.view {
+    display: flex;
+    justify-content: center;
+}
+
+.hero-background {
+    background-image: url(image/gradient-background-backdrop-multicolor-colorful-vibrant-3840x2160-6723.png);
+    display: flex;
+    justify-content: center;
+}
+.hero {
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+    width: 80%;
+    padding-top: 250px;
+}
+.hero-text {
+    margin-top: 40px;
+    margin-bottom: 150px;
+    width: 500px;
+}
+.hero-img {
+    width: 500px;
+}
+.hero h1{
+    background-color: white;
+    padding: 5px 0px;
+    border-radius: 7px 0px;
+    width: 110px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+.hero h2 {
+    margin-top: 20px;
+    font-size: 40px;
+    padding: 5px;
+    padding-top: 15px;
+    color: white;
+    font-weight: bolder;
+}
+.hero p {
+    padding: 5px;
+    color: white;
+}
+.hero-icon {
+    margin-top: 15px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+
+}
+.hero-icon img {
+    height: 20px;
+    color: white;
+    padding: 5px;
+}
+.hero-icon p {
+    color: black ;
+    background-color: white;
+    text-align: center;
+    border-radius: 7px 0px;
+    font-weight: bold;
+    font-size: 14px;
+}
+.hero-button{
+    margin-top: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+}
+.hero-button a {
+    color: black ;
+    background-color: white;
+    text-align: center;
+    border-radius: 7px 0px;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    flex-direction: column;
+    margin-top: 60px;
+    margin-bottom: 50px;
+
+}
+.section h1{
+    color: gray;
+    font-size: 15px;
+    text-align: center;
+}
+.section h2 {
+    color: purple;
+    font-size: 40px;
+    margin-top: 5px;
+    background-color: white;
+    text-align: center;
+} 
+.items{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.item{
+    margin-top: 50px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    border: 5px black solid;
+    border-radius: 15px;
+    justify-content: center;
+}
+.item img{
+    height: 100px;
+    width: 100px;
+    margin: auto;
+    margin-top: 30px;
+}
+.item h3{
+    color: purple;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 30px;
+    margin-top: 20px;
+}
+.item p{
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.item a{
+    margin-bottom: 15px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 40px;
+    text-decoration: none;
+    background-color: blueviolet;
+    width: 100px;
+    border-radius: 7px 0px;
+    padding: 5px 15px;
+    color: white;
+    font-size: 20px;
+}
