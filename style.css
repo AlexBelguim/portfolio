@@ -1,3 +1,7 @@
+body{
+    background-color: rgb(24, 26, 27);
+}
+
 
 .view {
     display: flex;
@@ -15,11 +19,13 @@
     gap: 10%;
     width: 80%;
     padding-top: 250px;
+    flex-wrap: wrap;
 }
 .hero-text {
     margin-top: 40px;
     margin-bottom: 150px;
     width: 500px;
+    align-items: center;
 }
 .hero-img {
     width: 500px;
@@ -34,10 +40,8 @@
     font-weight: bold;
 }
 .hero h2 {
-    margin-top: 20px;
     font-size: 40px;
     padding: 5px;
-    padding-top: 15px;
     color: white;
     font-weight: bolder;
 }
@@ -46,11 +50,9 @@
     color: white;
 }
 .hero-icon {
-    margin-top: 15px;
-    padding: 5px;
+    margin-top: 35px;
     display: flex;
     flex-direction: row;
-    gap: 15px;
     align-items: center;
 
 }
@@ -60,28 +62,28 @@
     padding: 5px;
 }
 .hero-icon p {
-    color: black ;
-    background-color: white;
-    text-align: center;
-    border-radius: 7px 0px;
+    color: white ;
+    padding-bottom: 7px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 20px;
 }
 .hero-button{
     margin-top: 10px;
     padding: 5px;
     display: flex;
     flex-direction: row;
-    gap: 15px;
+    gap: 30px;
     align-items: center;
 }
 .hero-button a {
-    color: black ;
-    background-color: white;
+    color: white ;
     text-align: center;
     border-radius: 7px 0px;
+    border: solid white 3px;
     font-weight: bold;
-    padding: 5px 20px;
+    font-size: 20px;
+    padding: 5px 30px 9px 30px;
+
 }
 .section {
     display: flex;
@@ -99,20 +101,22 @@
     text-align: center;
 }
 .section h2 {
-    color: purple;
+    color: blueviolet;
     font-size: 40px;
     margin-top: 5px;
-    background-color: white;
     text-align: center;
 } 
 .items{
     width: 100%;
+    margin-top: 50px;
     display: flex;
-    justify-content: space-evenly;
+    gap: 25px;
+    justify-content: center;
     flex-wrap: wrap;
+    
 }
 .item{
-    margin-top: 50px;
+
     width: 250px;
     display: flex;
     flex-direction: column;
@@ -127,28 +131,92 @@
     margin-top: 30px;
 }
 .item h3{
-    color: purple;
+    color: blueviolet;
     text-align: center;
     font-weight: bolder;
     font-size: 30px;
     margin-top: 20px;
 }
 .item p{
-    width: 90%;
+    color: 	white;
     margin: auto;
     margin-top: 10px;
     margin-bottom: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 150px;
 }
 .item a{
-    margin-bottom: 15px;
+    color: blueviolet ;
     text-align: center;
+    border-radius: 7px 0px;
+    border: solid blueviolet 3px;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px 20px 9px 20px;
+
     margin: auto;
     margin-bottom: 40px;
-    text-decoration: none;
-    background-color: blueviolet;
     width: 100px;
-    border-radius: 7px 0px;
-    padding: 5px 15px;
-    color: white;
-    font-size: 20px;
 }
+
+.wrapper-form{
+    display: flex;
+    margin-top: 50px;
+    gap: 25px;
+    justify-content: center;
+
+}
+.wrapper-form p{
+    width: 50%;
+    font-size: 20px;
+    color: white;
+}
+.wrapper-form .form {
+    width: 50%;
+}
+.wrapper-form .first-name, .last-name, .email, .email-content{
+    height: 30px;
+    border: 2px solid blueviolet;
+    background-color: rgb(24, 26, 27);
+    margin: 5px 10px;
+    box-sizing: border-box;
+    padding: 10px;
+    color: white;
+}
+.form-name {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.first-name, .last-name {
+    width: 94%;
+}
+.email {
+    width: 94%;
+}
+.form .email-content {
+    resize: none;
+    height: 150px;
+    width: 94%;
+}
+textarea {
+    color: white;
+}
+.send {
+    color: blueviolet ;
+    text-align: center;
+    border-radius: 7px 0px;
+    border: solid blueviolet 3px;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px 20px 9px 20px;
+    margin: auto;
+    margin-bottom: 40px;
+    width: 100px;
+    width: 94%;
+    margin: 5px 10px;
+    background-color: rgb(24, 26, 27);
+    text-decoration: underline;
+}
+
