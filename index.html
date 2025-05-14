@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32 NeoPixel Color & Timer</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    h1 { margin-bottom: 10px; }
+    .section { margin-bottom: 20px; }
+    .group { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+    .group-header { display: flex; align-items: center; justify-content: space-between; }
+    .group-controls { margin-top: 10px; }
+    button, input { margin: 5px 0; }
+    label { display: block; margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h1>ESP32 NeoPixel Color & Timer</h1>
+
+  <div class="section">
+    <button id="connectBtn">Connect</button>
+    <button id="disconnectBtn" disabled>Disconnect</button>
+    <span id="status">Status: Disconnected</span>
+  </div>
+
+  <div class="section">
+    <label>
+      Number of Groups (1–10):
+      <input type="number" id="groupCount" min="1" max="10" value="3" style="width: 50px;">
+    </label>
+    <button id="setGroupsBtn">Apply</button>
+  </div>
+
+  <div id="groupsContainer" class="section"></div>
+
+  <div class="section">
+    <h2>Timer</h2>
+    <label>
+      Auto-off after
+      <input type="number" id="timerSeconds" min="1" value="60" style="width: 60px;">
+      seconds
+    </label>
+    <button id="setTimerBtn">Set Timer</button>
+  </div>
+
+  <script>
+    const UART_SERVICE      = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+    const RX_CHAR_UUID      = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+    const TX_CHAR_UUID      = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+    const MAX_GROUPS        = 10;
+
+    let device, server, service, rxChar;
+    let lastColors = Array(MAX_GROUPS).fill('#ffffff');
+
+    // UI elements
+    const statusSpan      = document.getElementById('status');
+    const connectBtn      = document.getElementById('connectBtn');
+    const disconnectBtn   = document.getElementById('disconnectBtn');
+    const groupCountInput = document.getElementById('groupCount');
+    const setGroupsBtn    = document.getElementById('setGroupsBtn');
+    const groupsContainer = document.getElementById('groupsContainer');
+    const timerSeconds    = document.getElementById('timerSeconds');
+    const setTimerBtn     = document.getElementById('setTimerBtn');
+
+    connectBtn.addEventListener('click', async () => {
+      try {
+        device = await navigator.bluetooth.requestDevice({
+          filters: [{ services: [UART_SERVICE] }]
+        });
+        server  = await device.gatt.connect();
+        service = await server.getPrimaryService(UART_SERVICE);
+        rxChar  = await service.getCharacteristic(RX_CHAR_UUID);
+        statusSpan.textContent    = 'Status: Connected';
+        connectBtn.disabled       = true;
+        disconnectBtn.disabled    = false;
+      } catch (err) {
+        console.error(err);
+        statusSpan.textContent = 'Error: ' + err;
+      }
+    });
+
+    disconnectBtn.addEventListener('click', () => {
+      if (device && device.gatt.connected) device.gatt.disconnect();
+      statusSpan.textContent    = 'Status: Disconnected';
+      connectBtn.disabled       = false;
+      disconnectBtn.disabled    = true;
+    });
+
+    function sendCommand(cmd) {
+      if (!rxChar) return;
+      const data = new TextEncoder().encode(cmd + '\n');
+      rxChar.writeValue(data).catch(console.error);
+      console.log('TX:', cmd);
+    }
+
+    // Build dynamic group UI
+    function buildGroupControls(count) {
+      groupsContainer.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        // wrapper
+        const div = document.createElement('div');
+        div.className = 'group';
+
+        // header with name input
+        const hdr = document.createElement('div');
+        hdr.className = 'group-header';
+        const title = document.createElement('h3');
+        title.textContent = `Group ${i}`;
+        const nameIn = document.createElement('input');
+        nameIn.type = 'text';
+        nameIn.value = `Group ${i}`;
+        nameIn.style.marginLeft = '10px';
+        nameIn.addEventListener('input', () => {
+          title.textContent = nameIn.value || `Group ${i}`;
+        });
+        hdr.appendChild(title);
+        hdr.appendChild(nameIn);
+        div.appendChild(hdr);
+
+        // controls: color & on/off
+        const ctrl = document.createElement('div');
+        ctrl.className = 'group-controls';
+        // color picker
+        const lblColor = document.createElement('label');
+        lblColor.textContent = 'Color: ';
+        const colorIn = document.createElement('input');
+        colorIn.type = 'color';
+        colorIn.value = lastColors[i];
+        colorIn.addEventListener('change', () => {
+          lastColors[i] = colorIn.value;
+          const r = parseInt(colorIn.value.substr(1,2),16);
+          const g = parseInt(colorIn.value.substr(3,2),16);
+          const b = parseInt(colorIn.value.substr(5,2),16);
+          sendCommand(`COLOR ${i} ${r} ${g} ${b}`);
+        });
+        lblColor.appendChild(colorIn);
+        ctrl.appendChild(lblColor);
+
+        // on/off switch
+        const lblOn = document.createElement('label');
+        lblOn.textContent = 'On: ';
+        const onIn = document.createElement('input');
+        onIn.type = 'checkbox';
+        onIn.addEventListener('change', () => {
+          if (onIn.checked) {
+            // send last color
+            const c = lastColors[i];
+            const r = parseInt(c.substr(1,2),16),
+                  g = parseInt(c.substr(3,2),16),
+                  b = parseInt(c.substr(5,2),16);
+            sendCommand(`COLOR ${i} ${r} ${g} ${b}`);
+          } else {
+            // send black
+            sendCommand(`COLOR ${i} 0 0 0`);
+          }
+        });
+        lblOn.appendChild(onIn);
+        ctrl.appendChild(lblOn);
+
+        div.appendChild(ctrl);
+        groupsContainer.appendChild(div);
+      }
+    }
+
+    setGroupsBtn.addEventListener('click', () => {
+      const n = Math.max(1, Math.min(MAX_GROUPS, parseInt(groupCountInput.value)));
+      buildGroupControls(n);
+    });
+
+    setTimerBtn.addEventListener('click', () => {
+      const s = Math.max(1, parseInt(timerSeconds.value));
+      sendCommand(`TIMER ${s}`);
+    });
+
+    // initialize UI
+    buildGroupControls(parseInt(groupCountInput.value));
+  </script>
+</body>
+</html>
